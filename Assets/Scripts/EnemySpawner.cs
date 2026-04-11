@@ -21,7 +21,8 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemyCount; i++)
         {
             int posIndex = UnityEngine.Random.Range(0, numDirections - 1);
-            Instantiate(enemy, spawnPoints[posIndex]);
+            GameObject newEnemy = Instantiate(enemy, spawnPoints[posIndex]);
+            newEnemy.GetComponent<Enemy>().setDirection(posIndex);
             Debug.Log(posIndex);
         }
         waveCount++;
