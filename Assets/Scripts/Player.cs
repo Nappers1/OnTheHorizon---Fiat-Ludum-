@@ -69,9 +69,10 @@ public class Player : MonoBehaviour
         */
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Took damage!" + collision.gameObject.name);
+        Debug.Log("Took damage!" + other.gameObject.name);
+        Destroy(other.gameObject);
         health -= 100;
 
         if (health <= 0)
