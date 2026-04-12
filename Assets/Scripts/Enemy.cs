@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -6,8 +7,10 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private int startPoint;
     [SerializeField] private float speed;
+    
     void Start()
     {
+        
     }
 
     public void setDirection(int directionIndex)

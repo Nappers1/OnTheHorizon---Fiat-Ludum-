@@ -154,7 +154,8 @@ MonoBehaviour:
   - {fileID: 1820214894}
   - {fileID: 613138141}
   enemy: {fileID: 6628221995667081601, guid: f03b53f82da7ada469f6a773553d472b, type: 3}
-  enemyCount: 4
+  enemyCount: 10
+  timeBetweenEnemy: 0.5
 --- !u!4 &30204218
 Transform:
   m_ObjectHideFlags: 0
@@ -770,6 +771,10 @@ PrefabInstance:
     - target: {fileID: 6628221995667081601, guid: f03b53f82da7ada469f6a773553d472b, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6628221995667081601, guid: f03b53f82da7ada469f6a773553d472b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8735041761943842021, guid: f03b53f82da7ada469f6a773553d472b, type: 3}
       propertyPath: m_LocalPosition.x
