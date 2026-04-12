@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 30204218}
   - component: {fileID: 30204217}
+  - component: {fileID: 30204219}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -170,11 +171,31 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 35765186}
-  - {fileID: 1820214894}
   - {fileID: 1686262601}
+  - {fileID: 1820214894}
   - {fileID: 613138141}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &30204219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30204216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbb24d5b7f69284fbfcd9447f894a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  delay: 0.5
+  flashDuration: 0.1
+  spawnPoints:
+  - {fileID: 35765187}
+  - {fileID: 1686262602}
+  - {fileID: 1820214895}
+  - {fileID: 613138142}
 --- !u!1 &35765185
 GameObject:
   m_ObjectHideFlags: 0

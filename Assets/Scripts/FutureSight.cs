@@ -15,9 +15,14 @@ public class FutureSight : MonoBehaviour
     private void Start()
     {
         originalColor = spawnPoints[0].material.color;
-        StartCoroutine(Flash(spawnPoints[0]));
+        SetEnemySequence("0112323");
     }
 
+    public void SetEnemySequence(string sequence)
+    {
+        enemySequence = sequence;
+        StartCoroutine(SeeFuture());
+    }
     private IEnumerator Flash(Renderer rend)
     {
         rend.material.color = flashColor;
@@ -27,23 +32,14 @@ public class FutureSight : MonoBehaviour
         Debug.Log("returned to normal");
     }
 
-    public void SetEnemySequence(string sequence)
-    {
-        enemySequence = sequence;
-        for(int i = 0;i < enemySequence.Length;i++)
-        {
-            
-        }
-    }
     private IEnumerator SeeFuture()
     {
-        //Flash();
-        yield return new WaitForSeconds(delay);
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
+        for(int i = 0;i < enemySequence.Length; i++)
+        {
+            double index = char.GetNumericValue(enemySequence[i]);
+            StartCoroutine(Flash(spawnPoints[(int) index]));
+            yield return new WaitForSeconds(delay);
+        }
         
     }
 }
