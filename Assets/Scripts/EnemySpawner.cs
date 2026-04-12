@@ -14,6 +14,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float timeBetweenEnemy;
     private float timer = 0;
     private bool spawning = false;
+    private int enemyLeft = 0;
+    [SerializeField] private int[] waveEnemies;
     private void Start()
     {
         waveCount = 0;
@@ -40,5 +42,30 @@ public class EnemySpawner : MonoBehaviour
             Spawn();
         }
         waveCount++;
+
+        while (enemyLeft != 0)
+        {
+            enemyLeft = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                enemyLeft += spawnPoints[i].transform.childCount;
+            }
+            yield return new WaitForSeconds(2f);
+        }
+        Debug.Log("NEXT WAVE");
+
+        nextWave();
+    }
+
+    private void nextWave()
+    {
+        StartCoroutine(WaveStart());
+        /*
+        for (int i = 0; i < waveEnemies.Length; i++)
+        {
+            SetEnemySequence(waveEnemies[i]);
+        }
+        Debug.Log("NEXT WAVE");
+        */
     }
 }
