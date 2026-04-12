@@ -572,15 +572,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5071240665999484300, guid: 227f73e31f7bfb94581276fd17ef3f07, type: 3}
       propertyPath: enemyCount
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5071240665999484300, guid: 227f73e31f7bfb94581276fd17ef3f07, type: 3}
-      propertyPath: timeBetweenWave
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7181308119263507827, guid: 227f73e31f7bfb94581276fd17ef3f07, type: 3}
-      propertyPath: delay
-      value: 0.6
+      propertyPath: timeBetweenEnemy
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
