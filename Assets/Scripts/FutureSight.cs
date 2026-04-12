@@ -1,21 +1,27 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class FutureSight : MonoBehaviour
 {
 
+    private EnemySpawner spawnerScript;
     private string enemySequence;
     [SerializeField] private Color flashColor = Color.red;
-    [SerializeField] private float delay = 1f;
-    [SerializeField] private float flashDuration = 0.3f;
+    [SerializeField] private float delay = 0.5f;
+    [SerializeField] private float flashDuration = 0.2f;
     [SerializeField] private Renderer[] spawnPoints; //0 is top, 1,2 ,3,  top right down left (clockwise)
     private Color originalColor;
+
+    private AudioSource audioSrc;
+    [SerializeField] private AudioClip beep;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        audioSrc = GetComponent<AudioSource>();
         originalColor = spawnPoints[0].material.color;
-        SetEnemySequence("0112323");
+        spawnerScript = GetComponent<EnemySpawner>();
     }
 
     public void SetEnemySequence(string sequence)
@@ -23,13 +29,13 @@ public class FutureSight : MonoBehaviour
         enemySequence = sequence;
         StartCoroutine(SeeFuture());
     }
+
     private IEnumerator Flash(Renderer rend)
     {
+        audioSrc.PlayOneShot(beep);
         rend.material.color = flashColor;
-        Debug.Log("Flashed!");
         yield return new WaitForSeconds(flashDuration);
         rend.material.color = originalColor;
-        Debug.Log("returned to normal");
     }
 
     private IEnumerator SeeFuture()
@@ -40,6 +46,6 @@ public class FutureSight : MonoBehaviour
             StartCoroutine(Flash(spawnPoints[(int) index]));
             yield return new WaitForSeconds(delay);
         }
-        
+        StartCoroutine(spawnerScript.StartSpawning());
     }
 }
