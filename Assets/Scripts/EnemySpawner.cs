@@ -24,6 +24,8 @@ public class EnemySpawner : MonoBehaviour
     private string enemySequence;
     private string typeSequence;
 
+    [SerializeField] private Player player;
+
     private void Start()
     {
         waveCount = 0;
@@ -64,7 +66,18 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         yield return new WaitForSeconds(timeBetweenWave);
-        nextWave();
+
+        if (player.redoWave == false)
+        {
+            Debug.Log("Yupppppppppp");
+            nextWave();
+        }
+        else
+        {
+            Debug.Log("Noooooooooooooo");
+            player.redoWave = false;
+            futureSight.SetEnemySequence(enemySequence, typeSequence);
+        }
 
     }
 
