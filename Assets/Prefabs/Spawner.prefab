@@ -146,11 +146,13 @@ MonoBehaviour:
   - {fileID: 1226954437360088569}
   - {fileID: 7539947687471769665}
   - {fileID: 204563825067140431}
-  enemy: {fileID: 6628221995667081601, guid: f03b53f82da7ada469f6a773553d472b, type: 3}
+  redEnemyPrefab: {fileID: 0}
+  blueEnemyPrefab: {fileID: 0}
   enemyCount: 10
   timeBetweenEnemy: 0.5
   timeBetweenWave: 1
   waveEnemies: 
+  player: {fileID: 6592477938826491207, guid: 0957760c353b2ba438c79bcdf8214e02, type: 3}
 --- !u!114 &7181308119263507827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cbb24d5b7f69284fbfcd9447f894a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  redFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  blueFlashColor: {r: 0, g: 0, b: 1, a: 1}
   delay: 0.6
   flashDuration: 0.1
   spawnPoints:
