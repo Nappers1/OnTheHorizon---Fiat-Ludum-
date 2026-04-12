@@ -18,6 +18,6 @@ public class TitleScreen : MonoBehaviour
 
     public void PlayButton()
     {
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName("PlayerTest"));
+        SceneManager.LoadScene("PlayerTest");
     }
 }
