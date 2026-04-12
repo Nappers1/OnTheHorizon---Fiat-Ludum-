@@ -68,4 +68,15 @@ public class Player : MonoBehaviour
         movey = v.y;
         */
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Took damage!" + collision.gameObject.name);
+        health -= 100;
+
+        if (health <= 0)
+        {
+            Debug.Log("GAME OVER!");
+        }
+    }
 }
