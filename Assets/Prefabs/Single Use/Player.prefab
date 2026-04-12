@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1781532366919200395}
   - component: {fileID: 8343262814920501312}
   - component: {fileID: 996937225960194599}
+  - component: {fileID: -8983729701240514154}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -138,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   stepSize: 3
+  PlayerUI: {fileID: -8983729701240514154}
 --- !u!61 &8343262814920501312
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -211,3 +213,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-8983729701240514154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2585199636168888615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aab085c6966d68a40b71e2fb1cb22b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerUI
+  Heart1: {fileID: 0}
+  Heart2: {fileID: 0}
+  Heart3: {fileID: 0}
+  Heart4: {fileID: 0}
+  Heart5: {fileID: 0}
