@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 
     int health = 500;
 
+    [SerializeField] PlayerUI PlayerUI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -74,6 +76,7 @@ public class Player : MonoBehaviour
         Debug.Log("Took damage!" + other.gameObject.name);
         Destroy(other.gameObject);
         health -= 100;
+        PlayerUI.LoseHeart();
 
         if (health <= 0)
         {
