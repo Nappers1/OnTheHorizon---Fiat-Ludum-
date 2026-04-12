@@ -32,10 +32,11 @@ public class EnemySpawner : MonoBehaviour
     }
     private void Spawn(int posIndex, int typeIndex)
     {
-        Debug.Log("Spawning enemy at " + posIndex + " of type " + typeIndex);
         GameObject prefab = typeIndex == 1 ? blueEnemyPrefab : redEnemyPrefab;
-        GameObject newEnemy = Instantiate(prefab, spawnPoints[posIndex]);
+        GameObject newEnemy = Instantiate(prefab, spawnPoints[posIndex].position, Quaternion.identity);
+        Debug.Log("Spawned at position: " + spawnPoints[posIndex].position);
         newEnemy.GetComponent<Enemy>().setDirection(posIndex);
+        
     }
 
     public IEnumerator StartSpawning()

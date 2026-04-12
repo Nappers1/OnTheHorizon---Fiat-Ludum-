@@ -1,4 +1,5 @@
 using System;
+// using System.Diagnostics;
 using UnityEngine;
 
 public enum EnemyType { Red, Blue }
@@ -13,27 +14,40 @@ public class Enemy : MonoBehaviour
     
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
     }
+
+    // public void setDirection(int directionIndex)
+    // {
+    //     rb = GetComponent<Rigidbody2D>();
+    //     startPoint = directionIndex;
+    //     switch (directionIndex)
+    //     {
+    //         case 0:
+    //             rb.linearVelocity = -Vector2.up*speed;
+    //             break;
+    //         case 1:
+    //             rb.linearVelocity = -Vector2.right* speed;
+    //             break;
+    //         case 2:
+    //             rb.linearVelocity = -Vector2.down * speed;
+    //             break;
+    //         case 3:
+    //             rb.linearVelocity = -Vector2.left * speed;
+    //             break;
+    //     }
+    // }
 
     public void setDirection(int directionIndex)
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>(); 
         startPoint = directionIndex;
+        Debug.Log("Setting enemy direction. Start point: " + startPoint + ", Speed: " + speed);
         switch (directionIndex)
         {
-            case 0:
-                rb.linearVelocity = -Vector2.up*speed;
-                break;
-            case 1:
-                rb.linearVelocity = -Vector2.right* speed;
-                break;
-            case 2:
-                rb.linearVelocity = -Vector2.down * speed;
-                break;
-            case 3:
-                rb.linearVelocity = -Vector2.left * speed;
-                break;
+            case 0: rb.linearVelocity = -Vector2.up * speed;    break;
+            case 1: rb.linearVelocity = -Vector2.right * speed; break;
+            case 2: rb.linearVelocity = -Vector2.down * speed;  break;
+            case 3: rb.linearVelocity = -Vector2.left * speed;  break;
         }
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -70,30 +84,9 @@ public class Enemy : MonoBehaviour
 
     void HandleBlueCollision(Collider2D other)
     {
-        if (other.CompareTag("Shield"))
+        if (other.CompareTag("Shield") || other.CompareTag("Player"))
         {
-            // shield does nothing against blue
             HitPlayer();
-        }
-        else if (other.CompareTag("Player"))
-        {
-            PlayerController player = FindAnyObjectByType<PlayerController>();
-            if (player != null && player.isDodging)
-            {
-                // player teleported away — check if they actually moved off path
-                if (IsPlayerOffPath(player))
-                {
-                    Destroy(gameObject); // successfully dodged
-                }
-                else
-                {
-                    HitPlayer(); // held shift but didn't move out of the way
-                }
-            }
-            else
-            {
-                HitPlayer(); // wasn't even dodging
-            }
         }
     }
 
@@ -144,4 +137,30 @@ public class Enemy : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    void Update()
+{
+    if (Vector2.Distance(transform.position, Vector2.zero) < 0.3f)
+    {
+        if (enemyType == EnemyType.Blue)
+        {
+            PlayerController player = FindAnyObjectByType<PlayerController>();
+            if (player != null && player.isDodging && IsPlayerOffPath(player))
+            {
+                // player successfully dodged, destroy without damage
+                Destroy(gameObject);
+            }
+            else
+            {
+                // player didn't dodge, take damage
+                HitPlayer();
+            }
+        }
+        else
+        {
+            // red enemy always hits at center
+            HitPlayer();
+        }
+    }
+}   
 }
