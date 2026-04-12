@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7368011045083413125}
   - component: {fileID: -7911181995771865271}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy (blue)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.899371, g: 0.41211566, b: 0.33090055, a: 1}
+  m_Color: {r: 0, g: 0.38550198, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   startPoint: 0
   speed: 20
+  enemyType: 1
 --- !u!50 &7368011045083413125
 Rigidbody2D:
   serializedVersion: 5

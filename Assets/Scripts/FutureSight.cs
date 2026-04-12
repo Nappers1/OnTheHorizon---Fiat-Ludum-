@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+// using System.Diagnostics;
 using UnityEngine;
 
 public class FutureSight : MonoBehaviour
@@ -7,9 +8,14 @@ public class FutureSight : MonoBehaviour
 
     private EnemySpawner spawnerScript;
     private string enemySequence;
-    [SerializeField] private Color flashColor = Color.red;
-    [SerializeField] private float delay = 0.5f;
-    [SerializeField] private float flashDuration = 0.2f;
+    private string typeSequence;
+
+
+
+    [SerializeField] private Color redFlashColor = Color.red;
+    [SerializeField] private Color blueFlashColor = Color.blue;
+    [SerializeField] private float delay = 1f;
+    [SerializeField] private float flashDuration = 0.4f;
     [SerializeField] private Renderer[] spawnPoints; //0 is top, 1,2 ,3,  top right down left (clockwise)
     private Color originalColor;
 
@@ -24,13 +30,14 @@ public class FutureSight : MonoBehaviour
         spawnerScript = GetComponent<EnemySpawner>();
     }
 
-    public void SetEnemySequence(string sequence)
+    public void SetEnemySequence(string sequence, string types)
     {
         enemySequence = sequence;
+        typeSequence = types;
         StartCoroutine(SeeFuture());
     }
 
-    private IEnumerator Flash(Renderer rend)
+    private IEnumerator Flash(Renderer rend, Color flashColor)
     {
         audioSrc.PlayOneShot(beep);
         rend.material.color = flashColor;
@@ -43,7 +50,9 @@ public class FutureSight : MonoBehaviour
         for(int i = 0;i < enemySequence.Length; i++)
         {
             double index = char.GetNumericValue(enemySequence[i]);
-            StartCoroutine(Flash(spawnPoints[(int) index]));
+            bool isBlue = typeSequence[i] == '1';
+            Color flashColor = isBlue ? blueFlashColor : redFlashColor;
+            StartCoroutine(Flash(spawnPoints[(int) index], flashColor));
             yield return new WaitForSeconds(delay);
         }
         StartCoroutine(spawnerScript.StartSpawning());

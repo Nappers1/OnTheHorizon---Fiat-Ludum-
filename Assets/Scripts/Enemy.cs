@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
 
+public enum EnemyType { Red, Blue }
+
 public class Enemy : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Rigidbody2D rb;
     [SerializeField] private int startPoint;
     [SerializeField] private float speed;
+    public EnemyType enemyType = EnemyType.Red;
     
     void Start()
     {
@@ -35,23 +38,80 @@ public class Enemy : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (enemyType == EnemyType.Red)
+        {
+            HandleRedCollision(other);
+        }
+        else if (enemyType == EnemyType.Blue)
+        {
+            HandleBlueCollision(other);
+        }
+    }
+
+    void HandleRedCollision(Collider2D other)
+    {
         if (other.CompareTag("Shield"))
         {
-            // check if shield is facing the right direction to block
-            PlayerController player = FindFirstObjectByType<PlayerController>();
+            PlayerController player = FindAnyObjectByType<PlayerController>();
             if (player != null && IsBlockedByShield(player))
             {
-                Destroy(gameObject);
+                Destroy(gameObject); // correctly blocked
             }
             else
             {
-                // shield is facing wrong way, still hits player
-                HitPlayer();
+                HitPlayer(); // wrong direction
             }
         }
         else if (other.CompareTag("Player"))
         {
             HitPlayer();
+        }
+    }
+
+    void HandleBlueCollision(Collider2D other)
+    {
+        if (other.CompareTag("Shield"))
+        {
+            // shield does nothing against blue
+            HitPlayer();
+        }
+        else if (other.CompareTag("Player"))
+        {
+            PlayerController player = FindAnyObjectByType<PlayerController>();
+            if (player != null && player.isDodging)
+            {
+                // player teleported away — check if they actually moved off path
+                if (IsPlayerOffPath(player))
+                {
+                    Destroy(gameObject); // successfully dodged
+                }
+                else
+                {
+                    HitPlayer(); // held shift but didn't move out of the way
+                }
+            }
+            else
+            {
+                HitPlayer(); // wasn't even dodging
+            }
+        }
+    }
+
+    bool IsPlayerOffPath(PlayerController player)
+    {
+        // check if player has moved away from the enemy's travel axis
+        Vector3 pos = player.transform.position;
+        float threshold = 0.8f;
+
+        switch (startPoint)
+        {
+            case 0: // enemy from top, moving down — dodge left or right
+            case 2: // enemy from bottom, moving up — dodge left or right
+                return Mathf.Abs(pos.x) > threshold;
+            case 1: // enemy from right, moving left — dodge up or down
+            case 3: // enemy from left, moving right — dodge up or down
+                return Mathf.Abs(pos.y) > threshold;
+            default: return false;
         }
     }
 
