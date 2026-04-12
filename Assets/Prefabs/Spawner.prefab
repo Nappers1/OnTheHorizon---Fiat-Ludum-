@@ -101,6 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452931079403927676}
   - component: {fileID: 5071240665999484300}
+  - component: {fileID: 7181308119263507827}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -147,6 +148,26 @@ MonoBehaviour:
   enemy: {fileID: 6628221995667081601, guid: f03b53f82da7ada469f6a773553d472b, type: 3}
   enemyCount: 10
   timeBetweenEnemy: 0.5
+--- !u!114 &7181308119263507827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455884275358419052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbb24d5b7f69284fbfcd9447f894a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+  delay: 0.5
+  flashDuration: 0.1
+  spawnPoints:
+  - {fileID: 3046683942904586412}
+  - {fileID: 8355147081753193096}
+  - {fileID: 5722816479844243646}
+  - {fileID: 8756739216080354424}
 --- !u!1 &6067893692243783672
 GameObject:
   m_ObjectHideFlags: 0
