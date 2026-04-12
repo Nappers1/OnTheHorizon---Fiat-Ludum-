@@ -8,18 +8,25 @@ public class Player : MonoBehaviour
     // [SerializeField] float speed = 5f;
     [SerializeField] float stepSize = 3f;
 
+    PlayerUI playerUI;
+    AudioSource audioSrc;
+    [SerializeField] AudioClip move;
+    [SerializeField] AudioClip hit;
+
+
     int health = 500;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         audioSrc = GetComponent<AudioSource>();
-        PlayerUI = GetComponent<PlayerUI>();
+        playerUI = GetComponent<PlayerUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
             transform.position += Vector3.up * stepSize;
@@ -62,7 +69,7 @@ public class Player : MonoBehaviour
         if (Keyboard.current.dKey.wasReleasedThisFrame)
         {
             transform.position = transform.position -= Vector3.right * stepSize;
-        }
+        }*/
 
         // Vector2 movement = new Vector2(movex, movey);
         // transform.position += (Vector3)(movement * speed * Time.deltaTime);
@@ -83,7 +90,7 @@ public class Player : MonoBehaviour
         audioSrc.PlayOneShot(hit);
         Destroy(other.gameObject);
         health -= 100;
-        PlayerUI.LoseHeart();
+        playerUI.LoseHeart();
 
         if (health <= 0)
         {
