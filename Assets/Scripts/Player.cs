@@ -11,11 +11,15 @@ public class Player : MonoBehaviour
     int health = 500;
 
     [SerializeField] PlayerUI PlayerUI;
+    AudioSource audioSrc;
+    [SerializeField] AudioClip hit;
+    [SerializeField] AudioClip move;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        audioSrc = GetComponent<AudioSource>();
+        PlayerUI = GetComponent<PlayerUI>();
     }
 
     // Update is called once per frame
@@ -24,6 +28,7 @@ public class Player : MonoBehaviour
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
             transform.position += Vector3.up * stepSize;
+            audioSrc.PlayOneShot(move);
         }
         if (Keyboard.current.wKey.wasReleasedThisFrame)
         {
@@ -33,6 +38,8 @@ public class Player : MonoBehaviour
         if (Keyboard.current.sKey.wasPressedThisFrame)
         {
             transform.position += Vector3.down * stepSize;
+            audioSrc.PlayOneShot(move);
+
         }
         if (Keyboard.current.sKey.wasReleasedThisFrame)
         {
@@ -42,6 +49,8 @@ public class Player : MonoBehaviour
         if (Keyboard.current.aKey.wasPressedThisFrame)
         {
             transform.position += Vector3.left * stepSize;
+            audioSrc.PlayOneShot(move);
+
         }
         if (Keyboard.current.aKey.wasReleasedThisFrame)
         {
@@ -51,6 +60,8 @@ public class Player : MonoBehaviour
         if (Keyboard.current.dKey.wasPressedThisFrame)
         {
             transform.position += Vector3.right * stepSize;
+            audioSrc.PlayOneShot(move);
+
         }
 
         if (Keyboard.current.dKey.wasReleasedThisFrame)
@@ -73,7 +84,8 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Took damage!" + other.gameObject.name);
+        //Debug.Log("Took damage!" + other.gameObject.name);
+        audioSrc.PlayOneShot(hit);
         Destroy(other.gameObject);
         health -= 100;
         PlayerUI.LoseHeart();

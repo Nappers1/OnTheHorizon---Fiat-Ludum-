@@ -12,37 +12,35 @@ public class EnemySpawner : MonoBehaviour
     private int numDirections = 4; 
     [SerializeField] private int enemyCount = 4;
     [SerializeField] private float timeBetweenEnemy;
+    [SerializeField] private float timeBetweenWave;
     private float timer = 0;
     private bool spawning = false;
     private int enemyLeft = 0;
     [SerializeField] private int[] waveEnemies;
+
+    private FutureSight futureSight;
+    private string enemySequence;
     private void Start()
     {
         waveCount = 0;
-        StartCoroutine(WaveStart());
+        futureSight = GetComponent<FutureSight>();
+        WaveStart();
     }
-
-    void Update()
+    private void Spawn(int posIndex)
     {
-    }
-
-    private void Spawn()
-    {
-        int posIndex = UnityEngine.Random.Range(0, numDirections);
         GameObject newEnemy = Instantiate(enemy, spawnPoints[posIndex]);
         newEnemy.GetComponent<Enemy>().setDirection(posIndex);
     }
 
-    IEnumerator WaveStart()
+    public IEnumerator StartSpawning()
     {
-        spawning = true; 
-        for (int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < enemySequence.Length; i++)
         {
+            Spawn((int) char.GetNumericValue(enemySequence[i]));
             yield return new WaitForSeconds(timeBetweenEnemy);
-            Spawn();
         }
-        waveCount++;
 
+        //checks if enemies are left, recursively calls the wave start again. 
         while (enemyLeft != 0)
         {
             enemyLeft = 0;
@@ -50,16 +48,29 @@ public class EnemySpawner : MonoBehaviour
             {
                 enemyLeft += spawnPoints[i].transform.childCount;
             }
-            yield return new WaitForSeconds(2f);
         }
-        Debug.Log("NEXT WAVE");
-
+        yield return new WaitForSeconds(timeBetweenWave);
         nextWave();
+
+    }
+
+    private void WaveStart()
+    {
+        string newSequence = "";
+        for(int i = 0;i < enemyCount; i++)
+        {
+            newSequence += UnityEngine.Random.Range(0, numDirections).ToString();
+        }
+        enemySequence = newSequence;
+        futureSight.SetEnemySequence(newSequence);
     }
 
     private void nextWave()
     {
-        StartCoroutine(WaveStart());
+        WaveStart();
+        waveCount++;
+        
+        Debug.Log("WAVE #" + waveCount);
         /*
         for (int i = 0; i < waveEnemies.Length; i++)
         {
