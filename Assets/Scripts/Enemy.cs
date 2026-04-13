@@ -139,28 +139,56 @@ public class Enemy : MonoBehaviour
     }
 
     void Update()
-{
-    if (Vector2.Distance(transform.position, Vector2.zero) < 0.3f)
     {
-        if (enemyType == EnemyType.Blue)
+        if (enemyType == EnemyType.Red)
         {
-            PlayerController player = FindAnyObjectByType<PlayerController>();
-            if (player != null && player.isDodging && IsPlayerOffPath(player))
+            HandleRedMovement();
+        }
+
+        if (Vector2.Distance(transform.position, Vector2.zero) < 0.3f)
+        {
+            if (enemyType == EnemyType.Blue)
             {
-                // player successfully dodged, destroy without damage
-                Destroy(gameObject);
+                PlayerController player = FindAnyObjectByType<PlayerController>();
+                if (player != null && player.isDodging && IsPlayerOffPath(player))
+                {
+                    // player successfully dodged, destroy without damage
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    // player didn't dodge, take damage
+                    HitPlayer();
+                }
             }
             else
             {
-                // player didn't dodge, take damage
+                // red enemy always hits at center
                 HitPlayer();
             }
         }
+    }
+    void HandleRedMovement()
+    {
+        PlayerController player = FindAnyObjectByType<PlayerController>();
+        if (player == null) return;
+    
+        if (player.isDodging)
+        {
+            // follow the player when dodging
+            Vector2 direction = (player.transform.position - transform.position).normalized;
+            rb.linearVelocity = direction * speed;
+        }
         else
         {
-            // red enemy always hits at center
-            HitPlayer();
+            // player returned to center, go back to original direction
+            switch (startPoint)
+            {
+                case 0: rb.linearVelocity = -Vector2.up * speed;    break;
+                case 1: rb.linearVelocity = -Vector2.right * speed; break;
+                case 2: rb.linearVelocity = -Vector2.down * speed;  break;
+                case 3: rb.linearVelocity = -Vector2.left * speed;  break;
+            }
         }
-    }
-}   
+    }   
 }
