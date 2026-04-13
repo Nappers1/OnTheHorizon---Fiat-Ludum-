@@ -74,7 +74,8 @@ public class Enemy : MonoBehaviour
             PlayerController player = FindAnyObjectByType<PlayerController>();
             if (player != null && IsBlockedByShield(player))
             {
-                Destroy(gameObject); // correctly blocked
+                SuccessfulPlayer();
+                // correctly blocked
             }
             else
             {
