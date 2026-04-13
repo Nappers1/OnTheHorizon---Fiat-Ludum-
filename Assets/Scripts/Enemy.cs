@@ -10,10 +10,15 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private int startPoint;
     [SerializeField] private float speed;
+    [SerializeField] private int score = 10;
+    ScoreCounter scoreScript;
+    PlayerController player;
     public EnemyType enemyType = EnemyType.Red;
     
     void Start()
     {
+        player = FindAnyObjectByType<PlayerController>();
+        scoreScript = FindAnyObjectByType<ScoreCounter>(); 
     }
 
     // public void setDirection(int directionIndex)
@@ -98,6 +103,7 @@ public class Enemy : MonoBehaviour
             if (player != null && IsBlockedByShield(player))
             {
                 Destroy(gameObject); // correctly blocked with lightsaber
+                SuccessfulPlayer();
             }
             else
             {
@@ -191,6 +197,12 @@ public class Enemy : MonoBehaviour
                 HitPlayer();
             }
         }
+    }
+
+    void SuccessfulPlayer()
+    {
+        scoreScript.AddScore(score);
+        Destroy(gameObject);
     }
 
     void HandleTrackingMovement()
