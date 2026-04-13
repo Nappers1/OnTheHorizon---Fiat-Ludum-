@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip move;
     [SerializeField] AudioClip hit;
     [SerializeField] GameObject gameOverScreen;
+    [SerializeField] AudioSource backgroundMusicSrc;
 
 
     int health = 500;
@@ -108,6 +109,7 @@ public class Player : MonoBehaviour
     }
     void GameOver()
     {
+        backgroundMusicSrc.Stop();
         gameOver = true;
         gameOverScreen.SetActive(true);
         ScreenShake.Instance.TriggerShake(0.3f, 0.2f);
