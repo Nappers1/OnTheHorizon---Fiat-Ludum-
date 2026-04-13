@@ -1,28 +1,29 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] GameObject Heart1;
-    [SerializeField] GameObject Heart2;
-    [SerializeField] GameObject Heart3;
-    [SerializeField] GameObject Heart4;
-    [SerializeField] GameObject Heart5;
     int currentHearts;
+    [SerializeField] private Transform heartsParent;
+    [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite emptyHeart;
 
     void Start()
     {
         currentHearts = 5;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void LoseHeart()
     {
+        if (currentHearts > 0)
+        {
+            if (heartsParent.GetChild(currentHearts - 1).GetComponent<Image>() != null)
+                heartsParent.GetChild(currentHearts - 1).GetComponent<Image>().sprite = emptyHeart;
+        }
+        
+        /*
         if (currentHearts == 5)
         {
             Heart5.SetActive(false);
@@ -42,7 +43,7 @@ public class PlayerUI : MonoBehaviour
         else if (currentHearts == 1)
         {
             Heart1.SetActive(false);
-        }
+        }*/
         currentHearts--;
     }
 }

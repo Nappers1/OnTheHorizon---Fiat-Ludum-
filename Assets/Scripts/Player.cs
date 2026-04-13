@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -12,22 +13,28 @@ public class Player : MonoBehaviour
     AudioSource audioSrc;
     [SerializeField] AudioClip move;
     [SerializeField] AudioClip hit;
+    [SerializeField] GameObject gameOverScreen;
 
 
     int health = 500;
     public bool redoWave;
+    bool gameOver = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameOverScreen.SetActive(false);
         audioSrc = GetComponent<AudioSource>();
         playerUI = GetComponent<PlayerUI>();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        /*
+    { 
+        if (Keyboard.current.wKey.wasPressedThisFrame || Keyboard.current.sKey.wasPressedThisFrame || Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.dKey.wasPressedThisFrame)
+            audioSrc.PlayOneShot(move);
+  /*
+
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
             transform.position += Vector3.up * stepSize;
@@ -62,14 +69,8 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.dKey.wasPressedThisFrame)
         {
-            transform.position += Vector3.right * stepSize;
             audioSrc.PlayOneShot(move);
-
-        }
-
-        if (Keyboard.current.dKey.wasReleasedThisFrame)
-        {
-            transform.position = transform.position -= Vector3.right * stepSize;
+  
         }*/
 
         // Vector2 movement = new Vector2(movex, movey);
@@ -96,7 +97,25 @@ public class Player : MonoBehaviour
 
         if (health <= 0)
         {
-            Debug.Log("GAME OVER!");
+            GameOver();
         }
     }
+
+    public bool isGameOver()
+    {
+        return gameOver;
+    }
+    void GameOver()
+    {
+        gameOver = true;
+        gameOverScreen.SetActive(true);
+    }
+    //button press
+
+    public void Restart()
+    {
+        //just hard resets the scene for now
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
 }

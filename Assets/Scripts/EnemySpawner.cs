@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 // using System.Diagnostics;
 
 public class EnemySpawner : MonoBehaviour
@@ -10,9 +12,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject blueEnemyPrefab;
     [SerializeField] private GameObject greenEnemyPrefab;
 
-    
-
-    private int waveCount = 0;
+    private int waveCount = 1;
     private int numDirections = 4; 
     [SerializeField] private int enemyCount = 3;
     [SerializeField] private float timeBetweenEnemy;
@@ -27,10 +27,13 @@ public class EnemySpawner : MonoBehaviour
     private string typeSequence;
 
     [SerializeField] private Player player;
+    [SerializeField] private GameObject nextWaveButton;
+    [SerializeField] private TMP_Text waveText;
 
     private void Start()
     {
-        waveCount = 0;
+        waveCount = 1;
+        nextWaveButton.SetActive(false);
         futureSight = GetComponent<FutureSight>();
         WaveStart();
     }
@@ -71,53 +74,62 @@ public class EnemySpawner : MonoBehaviour
 
         while (GameObject.FindGameObjectsWithTag("Enemy").Length > 0)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
-        yield return new WaitForSeconds(timeBetweenWave);
+        //yield return new WaitForSeconds(timeBetweenWave);
 
-        if (player.redoWave == false)
+        if(!player.isGameOver())
         {
-            nextWave();
+            if (player.redoWave == false)
+            {
+                nextWaveButton.SetActive(true);
+                //nextWave();
+            }
+            else
+            {
+                player.redoWave = false;
+                futureSight.SetEnemySequence(enemySequence, typeSequence);
+            }
         }
-        else
-        {
-            player.redoWave = false;
-            futureSight.SetEnemySequence(enemySequence, typeSequence);
-        }
+        
 
     }
 
+    //public so button can press
     private void WaveStart()
     {
+
         string newSequence = "";
         string newTypeSequence = "";
 
         int lastPos = -1; // track last spawn position
-
         for (int i = 0; i < enemyCount; i++)
-    {
-        // keep rolling until we get a different position than last
-        int newPos;
-        do
         {
-            newPos = UnityEngine.Random.Range(0, numDirections);
-        } while (newPos == lastPos);
+            // keep rolling until we get a different position than last
+            int newPos;
+            do
+            {
+                newPos = UnityEngine.Random.Range(0, numDirections);
+            } while (newPos == lastPos);
 
-        lastPos = newPos;
-        newSequence += newPos.ToString();
-        newTypeSequence += UnityEngine.Random.Range(0, 3).ToString();
-    }
+            lastPos = newPos;
+            newSequence += newPos.ToString();
+            newTypeSequence += UnityEngine.Random.Range(0, 3).ToString();
+        }
         enemySequence = newSequence;
         typeSequence = newTypeSequence;
         futureSight.SetEnemySequence(newSequence, newTypeSequence);
     }
 
-    private void nextWave()
+    //button press calls this
+    public void nextWave()
     {
-        WaveStart();
+        Debug.Log("PRESSED");
         waveCount++;
+        waveText.text = "WAVE " + waveCount;
+        nextWaveButton.SetActive(false);
+        WaveStart();
         
-        Debug.Log("WAVE #" + waveCount);
         /*
         for (int i = 0; i < waveEnemies.Length; i++)
         {
@@ -126,4 +138,6 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log("NEXT WAVE");
         */
     }
+
+
 }
