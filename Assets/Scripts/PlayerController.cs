@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public Transform shieldPivot;
     public GameObject shieldObject;
     public GameObject lightsaberObject;
-    public int health = 3;
+    public int health = 5;
 
     public PlayerMode currentMode = PlayerMode.Shield;
     public bool isDodging => currentMode == PlayerMode.Dodge;
@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
     {
         shieldObject.SetActive(currentMode == PlayerMode.Shield);
         lightsaberObject.SetActive(currentMode == PlayerMode.Lightsaber);
+        shieldObject.GetComponent<Collider2D>().enabled = currentMode == PlayerMode.Shield;
+        lightsaberObject.GetComponent<Collider2D>().enabled = currentMode == PlayerMode.Lightsaber;
     }
 
     void HandleShield()

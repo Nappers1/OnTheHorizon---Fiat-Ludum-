@@ -91,29 +91,24 @@ public class Enemy : MonoBehaviour
     }
 
     void HandleGreenCollision(Collider2D other)
-{
-    if (other.CompareTag("Lightsaber"))
     {
-        PlayerController player = FindAnyObjectByType<PlayerController>();
-        if (player != null && IsBlockedByShield(player)) // reuses same directional check
+        if (other.CompareTag("Lightsaber"))
         {
-            Destroy(gameObject); // correctly blocked with triangle
+            PlayerController player = FindAnyObjectByType<PlayerController>();
+            if (player != null && IsBlockedByShield(player))
+            {
+                Destroy(gameObject); // correctly blocked with lightsaber
+            }
+            else
+            {
+                HitPlayer(); // wrong direction
+            }
         }
-        else
+        else if (other.CompareTag("Player"))
         {
-            HitPlayer(); // wrong direction
+            HitPlayer();
         }
     }
-    else if (other.CompareTag("Shield"))
-    {
-        // shield doesn't work on green
-        HitPlayer();
-    }
-    else if (other.CompareTag("Player"))
-    {
-        HitPlayer();
-    }
-}
 
     bool IsPlayerOffPath(PlayerController player)
     {
@@ -165,50 +160,53 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (enemyType == EnemyType.Red)
+        PlayerController player = FindAnyObjectByType<PlayerController>();
+        if (player == null) return;
+
+        if (enemyType == EnemyType.Red || enemyType == EnemyType.Green)
         {
-            HandleRedMovement();
+            HandleTrackingMovement();
         }
 
-        if (Vector2.Distance(transform.position, Vector2.zero) < 0.3f)
+        Vector2 checkPosition = (enemyType == EnemyType.Red || enemyType == EnemyType.Green)
+            ? (Vector2)player.transform.position
+            : Vector2.zero;
+
+        if (Vector2.Distance(transform.position, checkPosition) < 0.3f)
         {
             if (enemyType == EnemyType.Blue)
             {
-                PlayerController player = FindAnyObjectByType<PlayerController>();
-                Debug.Log("isDodging: " + player.isDodging + " | IsOffPath: " + IsPlayerOffPath(player));
-                if (player != null && player.isDodging && IsPlayerOffPath(player))
+                if (player.isDodging && IsPlayerOffPath(player))
                 {
-                    // player successfully dodged, destroy without damage
                     Destroy(gameObject);
                 }
                 else
                 {
-                    // player didn't dodge, take damage
-                    Debug.Log("Dodge unsucessful! Player hit by blue enemy!");
+                    Debug.Log("Dodge unsuccessful! Player hit by blue enemy!");
                     HitPlayer();
                 }
             }
             else
             {
-                // red enemy always hits at center
                 HitPlayer();
             }
         }
     }
-    void HandleRedMovement()
+
+    void HandleTrackingMovement()
     {
         PlayerController player = FindAnyObjectByType<PlayerController>();
         if (player == null) return;
 
         if (player.isDodging)
         {
-            // follow the player when dodging
+            // chase player when dodging
             Vector2 direction = (player.transform.position - transform.position).normalized;
             rb.linearVelocity = direction * speed;
         }
         else
         {
-            // player returned to center, go back to original direction
+            // player back at center, resume original direction
             switch (startPoint)
             {
                 case 0: rb.linearVelocity = -Vector2.up * speed;    break;
@@ -217,5 +215,5 @@ public class Enemy : MonoBehaviour
                 case 3: rb.linearVelocity = -Vector2.left * speed;  break;
             }
         }
-    }   
+    } 
 }
