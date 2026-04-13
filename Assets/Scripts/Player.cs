@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
         audioSrc.PlayOneShot(hit);
         Destroy(other.gameObject);
         health -= 100;
+        ScreenShake.Instance.TriggerShake(0.3f, 0.07f);
         playerUI.LoseHeart();
         redoWave = true;
 
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour
     {
         gameOver = true;
         gameOverScreen.SetActive(true);
+        ScreenShake.Instance.TriggerShake(0.3f, 0.2f);
     }
     //button press
 
@@ -118,4 +120,5 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     
+
 }
