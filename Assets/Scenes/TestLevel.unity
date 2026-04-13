@@ -489,6 +489,17 @@ MonoBehaviour:
   Heart3: {fileID: 1384644237}
   Heart4: {fileID: 1384644236}
   Heart5: {fileID: 1384644235}
+--- !u!114 &1722726597 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6592477938826491207, guid: 0957760c353b2ba438c79bcdf8214e02, type: 3}
+  m_PrefabInstance: {fileID: 1377077519576703095}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722726588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd1e171fde150147a2d3352027b7248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
 --- !u!1 &1758021283 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 455884275358419052, guid: 227f73e31f7bfb94581276fd17ef3f07, type: 3}
@@ -655,6 +666,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5071240665999484300, guid: 227f73e31f7bfb94581276fd17ef3f07, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1722726597}
     - target: {fileID: 5071240665999484300, guid: 227f73e31f7bfb94581276fd17ef3f07, type: 3}
       propertyPath: enemyCount
       value: 2

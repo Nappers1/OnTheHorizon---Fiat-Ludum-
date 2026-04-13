@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 
 
     int health = 500;
+    public bool redoWave;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -91,6 +92,7 @@ public class Player : MonoBehaviour
         Destroy(other.gameObject);
         health -= 100;
         playerUI.LoseHeart();
+        redoWave = true;
 
         if (health <= 0)
         {
