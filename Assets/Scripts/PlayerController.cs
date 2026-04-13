@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 centerPos = Vector3.zero;
     public float dodgeDistance = 1.5f;
 
+    [SerializeField] private Sprite[] shieldSprites; //0 is top, clockwise 
+    [SerializeField] private Sprite[] dodgeAnims;
+    private SpriteRenderer render;
+
+    private void Start()
+    {
+        render = GetComponent<SpriteRenderer>();
+    }
     void Update()
     {
         HandleModeSwitch();
@@ -64,13 +73,29 @@ public class PlayerController : MonoBehaviour
     void HandleShield()
     {
         if (Keyboard.current.wKey.isPressed)
+        {
             shieldPivot.rotation = Quaternion.Euler(0, 0, 90);
+            render.sprite = shieldSprites[0];
+            render.flipX = false;
+        }
         else if (Keyboard.current.sKey.isPressed)
+        {
             shieldPivot.rotation = Quaternion.Euler(0, 0, -90);
+            render.sprite = shieldSprites[2];
+            render.flipX = false;
+        }
         else if (Keyboard.current.aKey.isPressed)
+        {
             shieldPivot.rotation = Quaternion.Euler(0, 0, 180);
+            render.sprite = shieldSprites[3];
+            render.flipX = false;
+        }
         else if (Keyboard.current.dKey.isPressed)
+        {
             shieldPivot.rotation = Quaternion.Euler(0, 0, 0);
+            render.sprite = shieldSprites[3];
+            render.flipX = true;
+        }
     }
 
     void HandleDodge()
