@@ -91,11 +91,22 @@ public class EnemySpawner : MonoBehaviour
     {
         string newSequence = "";
         string newTypeSequence = "";
-        for(int i = 0;i < enemyCount; i++)
+
+        int lastPos = -1; // track last spawn position
+
+        for (int i = 0; i < enemyCount; i++)
+    {
+        // keep rolling until we get a different position than last
+        int newPos;
+        do
         {
-            newSequence += UnityEngine.Random.Range(0, numDirections).ToString();
-            newTypeSequence += UnityEngine.Random.Range(0, 3).ToString(); // 0 = red, 1 = blue
-        }
+            newPos = UnityEngine.Random.Range(0, numDirections);
+        } while (newPos == lastPos);
+
+        lastPos = newPos;
+        newSequence += newPos.ToString();
+        newTypeSequence += UnityEngine.Random.Range(0, 3).ToString();
+    }
         enemySequence = newSequence;
         typeSequence = newTypeSequence;
         futureSight.SetEnemySequence(newSequence, newTypeSequence);
