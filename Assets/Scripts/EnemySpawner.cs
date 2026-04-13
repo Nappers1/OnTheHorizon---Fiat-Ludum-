@@ -69,12 +69,10 @@ public class EnemySpawner : MonoBehaviour
 
         if (player.redoWave == false)
         {
-            Debug.Log("Yupppppppppp");
             nextWave();
         }
         else
         {
-            Debug.Log("Noooooooooooooo");
             player.redoWave = false;
             futureSight.SetEnemySequence(enemySequence, typeSequence);
         }

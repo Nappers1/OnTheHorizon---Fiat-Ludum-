@@ -56,10 +56,10 @@ public class Enemy : MonoBehaviour
         {
             HandleRedCollision(other);
         }
-        else if (enemyType == EnemyType.Blue)
-        {
-            HandleBlueCollision(other);
-        }
+        // else if (enemyType == EnemyType.Blue)
+        // {
+        //     HandleBlueCollision(other);
+        // }
     }
 
     void HandleRedCollision(Collider2D other)
@@ -150,6 +150,7 @@ public class Enemy : MonoBehaviour
             if (enemyType == EnemyType.Blue)
             {
                 PlayerController player = FindAnyObjectByType<PlayerController>();
+                Debug.Log("isDodging: " + player.isDodging + " | IsOffPath: " + IsPlayerOffPath(player));
                 if (player != null && player.isDodging && IsPlayerOffPath(player))
                 {
                     // player successfully dodged, destroy without damage
@@ -158,6 +159,7 @@ public class Enemy : MonoBehaviour
                 else
                 {
                     // player didn't dodge, take damage
+                    Debug.Log("Dodge unsucessful! Player hit by blue enemy!");
                     HitPlayer();
                 }
             }
@@ -172,7 +174,7 @@ public class Enemy : MonoBehaviour
     {
         PlayerController player = FindAnyObjectByType<PlayerController>();
         if (player == null) return;
-    
+
         if (player.isDodging)
         {
             // follow the player when dodging
