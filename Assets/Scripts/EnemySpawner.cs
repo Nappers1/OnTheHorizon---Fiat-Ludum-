@@ -14,7 +14,7 @@ public class EnemySpawner : MonoBehaviour
 
     private int waveCount = 1;
     private int numDirections = 4; 
-    [SerializeField] private int enemyCount = 3;
+    [SerializeField] private float enemyCount = 3;
     [SerializeField] private float timeBetweenEnemy;
     [SerializeField] private float timeBetweenWave;
     private float timer = 0;
@@ -29,6 +29,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private GameObject nextWaveButton;
     [SerializeField] private TMP_Text waveText;
+
+    [SerializeField] private int blueWaveStart = 3;
+    [SerializeField] private int greenWaveStart = 5;
+    [SerializeField] private int startAddingEnemyCount = 8;
+    [SerializeField] private float addEnemyFrequency = 0.5f; //adds one enemy every 2 waves
+
+
 
     private void Start()
     {
@@ -103,7 +110,7 @@ public class EnemySpawner : MonoBehaviour
         string newTypeSequence = "";
 
         int lastPos = -1; // track last spawn position
-        for (int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < Mathf.Floor(enemyCount); i++)
         {
             // keep rolling until we get a different position than last
             int newPos;
@@ -114,7 +121,13 @@ public class EnemySpawner : MonoBehaviour
 
             lastPos = newPos;
             newSequence += newPos.ToString();
-            newTypeSequence += UnityEngine.Random.Range(0, 3).ToString();
+            //control which enemies statr
+            if (waveCount <= 3)
+                newTypeSequence += '0';
+            else if (waveCount <= 5)
+                newTypeSequence += UnityEngine.Random.Range(0, 2).ToString();
+            else
+                newTypeSequence += UnityEngine.Random.Range(0, 3).ToString();
         }
         enemySequence = newSequence;
         typeSequence = newTypeSequence;
@@ -126,6 +139,12 @@ public class EnemySpawner : MonoBehaviour
     {
         Debug.Log("PRESSED");
         waveCount++;
+        //only add # of enemies after wave
+        if (waveCount >= startAddingEnemyCount)
+        {
+            enemyCount += addEnemyFrequency;
+            //enemy count is a float, whenever we spawn we use the floor value
+        }
         waveText.text = "WAVE " + waveCount;
         nextWaveButton.SetActive(false);
         WaveStart();
