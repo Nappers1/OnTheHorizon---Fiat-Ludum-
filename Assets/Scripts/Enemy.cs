@@ -10,10 +10,15 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private int startPoint;
     [SerializeField] private float speed;
+    [SerializeField] private int score = 10;
+    ScoreCounter scoreScript;
+    PlayerController player;
     public EnemyType enemyType = EnemyType.Red;
     
     void Start()
     {
+        player = FindAnyObjectByType<PlayerController>();
+        scoreScript = FindAnyObjectByType<ScoreCounter>(); 
     }
 
     // public void setDirection(int directionIndex)
@@ -69,7 +74,8 @@ public class Enemy : MonoBehaviour
             PlayerController player = FindAnyObjectByType<PlayerController>();
             if (player != null && IsBlockedByShield(player))
             {
-                Destroy(gameObject); // correctly blocked
+                SuccessfulPlayer();
+                // correctly blocked
             }
             else
             {
@@ -94,12 +100,12 @@ public class Enemy : MonoBehaviour
 {
     if (other.CompareTag("Lightsaber"))
     {
-        PlayerController player = FindAnyObjectByType<PlayerController>();
         if (player != null && IsBlockedByShield(player)) // reuses same directional check
         {
-            Destroy(gameObject); // correctly blocked with triangle
-        }
-        else
+                SuccessfulPlayer();
+                // correctly blocked with triangle
+            }
+            else
         {
             HitPlayer(); // wrong direction
         }
@@ -179,7 +185,7 @@ public class Enemy : MonoBehaviour
                 if (player != null && player.isDodging && IsPlayerOffPath(player))
                 {
                     // player successfully dodged, destroy without damage
-                    Destroy(gameObject);
+                    SuccessfulPlayer();
                 }
                 else
                 {
@@ -195,6 +201,13 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    void SuccessfulPlayer()
+    {
+        scoreScript.AddScore(score);
+        Destroy(gameObject);
+    }
+
     void HandleRedMovement()
     {
         PlayerController player = FindAnyObjectByType<PlayerController>();
