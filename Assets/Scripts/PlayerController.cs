@@ -1,37 +1,62 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerMode { Shield, Dodge, Lightsaber }
+
 public class PlayerController : MonoBehaviour
 {
     public Transform shieldPivot;
     public GameObject shieldObject;
+    public GameObject lightsaberObject;
     public int health = 3;
 
-    public bool isDodging = false;
+    public PlayerMode currentMode = PlayerMode.Shield;
+    public bool isDodging => currentMode == PlayerMode.Dodge;
 
     private Vector3 centerPos = Vector3.zero;
     public float dodgeDistance = 1.5f;
 
-    private bool hasDodged = false;
-
     void Update()
     {
-        isDodging = Keyboard.current.leftShiftKey.isPressed ||
-                    Keyboard.current.rightShiftKey.isPressed;
+        HandleModeSwitch();
+        UpdateVisuals();
 
-        shieldObject.SetActive(!isDodging);
-
-        if (isDodging)
+        switch (currentMode)
         {
-            HandleDodge();
+            case PlayerMode.Shield:   HandleShield(); break;
+            case PlayerMode.Dodge:    HandleDodge();  break;
+            case PlayerMode.Lightsaber: HandleShield(); break;
         }
-        else
+    }
+
+    void HandleModeSwitch()
+    {
+        if (Keyboard.current.backslashKey.wasPressedThisFrame)
         {
-            // snap back to center when shift released
+            if (currentMode == PlayerMode.Lightsaber)
+                currentMode = PlayerMode.Shield;
+            else
+                currentMode = PlayerMode.Lightsaber;
+        }
+
+        // dodge overrides everything while shift held
+        if (Keyboard.current.leftShiftKey.isPressed ||
+            Keyboard.current.rightShiftKey.isPressed)
+        {
+            currentMode = PlayerMode.Dodge;
+        }
+        else if (currentMode == PlayerMode.Dodge)
+        {
+            // shift released, return to shield
+            currentMode = PlayerMode.Shield;
             transform.position = centerPos;
-            hasDodged = false;
-            HandleShield();
         }
+    }
+
+    void UpdateVisuals()
+    {
+        shieldObject.SetActive(currentMode == PlayerMode.Shield);
+        lightsaberObject.SetActive(currentMode == PlayerMode.Lightsaber);
     }
 
     void HandleShield()
@@ -48,7 +73,6 @@ public class PlayerController : MonoBehaviour
 
     void HandleDodge()
     {
-        // teleport to direction on keypress, snap back on release
         if (Keyboard.current.wKey.isPressed)
             transform.position = new Vector3(0, dodgeDistance, 0);
         else if (Keyboard.current.sKey.isPressed)
@@ -58,7 +82,7 @@ public class PlayerController : MonoBehaviour
         else if (Keyboard.current.dKey.isPressed)
             transform.position = new Vector3(dodgeDistance, 0, 0);
         else
-            transform.position = centerPos; // no key held = back to center
+            transform.position = centerPos;
     }
 
     public void TakeDamage()

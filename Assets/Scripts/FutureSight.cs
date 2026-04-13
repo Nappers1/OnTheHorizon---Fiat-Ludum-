@@ -14,6 +14,7 @@ public class FutureSight : MonoBehaviour
 
     [SerializeField] private Color redFlashColor = Color.red;
     [SerializeField] private Color blueFlashColor = Color.blue;
+    [SerializeField] private Color greenFlashColor = Color.green;
     [SerializeField] private float delay = 1f;
     [SerializeField] private float flashDuration = 0.4f;
     [SerializeField] private Renderer[] spawnPoints; //0 is top, 1,2 ,3,  top right down left (clockwise)
@@ -49,10 +50,16 @@ public class FutureSight : MonoBehaviour
     {
         for(int i = 0;i < enemySequence.Length; i++)
         {
-            double index = char.GetNumericValue(enemySequence[i]);
-            bool isBlue = typeSequence[i] == '1';
-            Color flashColor = isBlue ? blueFlashColor : redFlashColor;
-            StartCoroutine(Flash(spawnPoints[(int) index], flashColor));
+            double spawnIndex = char.GetNumericValue(enemySequence[i]);
+            // pick flash color based on type
+            Color flashColor;
+            switch (typeSequence[i])
+            {
+                case '1': flashColor = blueFlashColor;  break;
+                case '2': flashColor = greenFlashColor; break;
+                default:  flashColor = redFlashColor;   break; // '0' = red
+            }
+            StartCoroutine(Flash(spawnPoints[(int) spawnIndex], flashColor));
             yield return new WaitForSeconds(delay);
         }
         StartCoroutine(spawnerScript.StartSpawning());

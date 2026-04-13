@@ -2,7 +2,7 @@ using System;
 // using System.Diagnostics;
 using UnityEngine;
 
-public enum EnemyType { Red, Blue }
+public enum EnemyType { Red, Blue, Green}
 
 public class Enemy : MonoBehaviour
 {
@@ -56,10 +56,10 @@ public class Enemy : MonoBehaviour
         {
             HandleRedCollision(other);
         }
-        // else if (enemyType == EnemyType.Blue)
-        // {
-        //     HandleBlueCollision(other);
-        // }
+        else if (enemyType == EnemyType.Green)
+        {
+            HandleGreenCollision(other);
+        }
     }
 
     void HandleRedCollision(Collider2D other)
@@ -89,6 +89,31 @@ public class Enemy : MonoBehaviour
             HitPlayer();
         }
     }
+
+    void HandleGreenCollision(Collider2D other)
+{
+    if (other.CompareTag("Lightsaber"))
+    {
+        PlayerController player = FindAnyObjectByType<PlayerController>();
+        if (player != null && IsBlockedByShield(player)) // reuses same directional check
+        {
+            Destroy(gameObject); // correctly blocked with triangle
+        }
+        else
+        {
+            HitPlayer(); // wrong direction
+        }
+    }
+    else if (other.CompareTag("Shield"))
+    {
+        // shield doesn't work on green
+        HitPlayer();
+    }
+    else if (other.CompareTag("Player"))
+    {
+        HitPlayer();
+    }
+}
 
     bool IsPlayerOffPath(PlayerController player)
     {

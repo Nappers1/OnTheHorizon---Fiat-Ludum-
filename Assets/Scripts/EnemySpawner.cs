@@ -8,6 +8,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform[] spawnPoints; //0 is top, 1,2 ,3,  top right down left (clockwise
     [SerializeField] private GameObject redEnemyPrefab;
     [SerializeField] private GameObject blueEnemyPrefab;
+    [SerializeField] private GameObject greenEnemyPrefab;
+
     
 
     private int waveCount = 0;
@@ -34,7 +36,13 @@ public class EnemySpawner : MonoBehaviour
     }
     private void Spawn(int posIndex, int typeIndex)
     {
-        GameObject prefab = typeIndex == 1 ? blueEnemyPrefab : redEnemyPrefab;
+        GameObject prefab;
+        switch (typeIndex)
+        {
+            case 1:  prefab = blueEnemyPrefab;  break;
+            case 2:  prefab = greenEnemyPrefab; break;
+            default: prefab = redEnemyPrefab;   break;
+        }
         GameObject newEnemy = Instantiate(prefab, spawnPoints[posIndex].position, Quaternion.identity);
         Debug.Log("Spawned at position: " + spawnPoints[posIndex].position);
         newEnemy.GetComponent<Enemy>().setDirection(posIndex);
@@ -86,7 +94,7 @@ public class EnemySpawner : MonoBehaviour
         for(int i = 0;i < enemyCount; i++)
         {
             newSequence += UnityEngine.Random.Range(0, numDirections).ToString();
-            newTypeSequence += UnityEngine.Random.Range(0, 2).ToString(); // 0 = red, 1 = blue
+            newTypeSequence += UnityEngine.Random.Range(0, 3).ToString(); // 0 = red, 1 = blue
         }
         enemySequence = newSequence;
         typeSequence = newTypeSequence;
