@@ -24,17 +24,18 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         render = GetComponent<SpriteRenderer>();
+        shieldPivot.rotation = Quaternion.Euler(0, 0, 180);
     }
     void Update()
     {
         HandleModeSwitch();
         UpdateVisuals();
 
-        switch (currentMode)
+        HandleShield();
+
+        if (currentMode == PlayerMode.Dodge)
         {
-            case PlayerMode.Shield:   HandleShield(); break;
-            case PlayerMode.Dodge:    HandleDodge();  break;
-            case PlayerMode.Lightsaber: HandleShield(); break;
+            HandleDodge();
         }
     }
 
