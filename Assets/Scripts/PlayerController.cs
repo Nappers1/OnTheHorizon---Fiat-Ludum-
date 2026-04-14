@@ -43,18 +43,15 @@ public class PlayerController : MonoBehaviour
 
     void HandleModeSwitch()
     {
-<<<<<<< Updated upstream
-=======
         currentMode = PlayerMode.Shield;
-        /*
->>>>>>> Stashed changes
+
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             if (currentMode == PlayerMode.Lightsaber)
                 currentMode = PlayerMode.Shield;
             else
                 currentMode = PlayerMode.Lightsaber;
-        }*/
+        }
 
         // dodge overrides everything while shift held
         if (Keyboard.current.leftShiftKey.isPressed ||
