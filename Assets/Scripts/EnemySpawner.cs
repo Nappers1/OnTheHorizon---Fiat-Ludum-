@@ -126,8 +126,8 @@ public class EnemySpawner : MonoBehaviour
                 newTypeSequence += '0';
             else if (waveCount <= 5)
                 newTypeSequence += UnityEngine.Random.Range(0, 2).ToString();
-            else
-                newTypeSequence += UnityEngine.Random.Range(0, 3).ToString();
+            //else
+              //  newTypeSequence += UnityEngine.Random.Range(0, 3).ToString();
         }
         enemySequence = newSequence;
         typeSequence = newTypeSequence;
