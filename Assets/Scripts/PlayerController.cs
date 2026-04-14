@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleModeSwitch()
     {
-        if (Keyboard.current.backslashKey.wasPressedThisFrame)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             if (currentMode == PlayerMode.Lightsaber)
                 currentMode = PlayerMode.Shield;
